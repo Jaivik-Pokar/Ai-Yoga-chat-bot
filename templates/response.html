@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/style1.css">
+    <title>Yoga Pose Recommendations</title>
+</head>
+<body>
+    {% for response_item in response_data %}
+    <div id="chat">
+        Recommendations for '{{ response_item.keyword }}':
+        {% if response_item.recommendations %}
+            {% for recommendation in response_item.recommendations %}
+            <div>
+                <b>Yoga Pose:- {{ recommendation.pose.replace('_', ' ').title() }}</b>
+                <p><strong>Steps To Perform the Pose:</strong></p>
+                <ul style="list-style-type: none; padding: 0;">
+                    {% for step in recommendation.steps.split('\n') %}
+                        {% if step.strip() %}
+                        <li>{{ step.strip() }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+                {% if recommendation.video %}
+                    <p><strong><a href="{{ recommendation.video }}" target="_blank">Watch Video</a></strong></p>
+                {% else %}
+                    <p>No Video Available</p>
+                {% endif %}
+                {% if recommendation.image_data %}
+                    <img src="data:image/jpeg;base64,{{ recommendation.image_data }}" alt="{{ recommendation.pose }}" width="250" height="200">
+                {% else %}
+                    <p>No Image Available</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No recommendations found for the keyword '{{ response_item.keyword }}'.</p>
+        {% endif %}
+        
+        <!-- Additional check to display "No recommendations found" if recommendations list is empty -->
+        {% if not response_item.recommendations %}
+            <p>No recommendation found,<br>The project is still under process and is not fully completed. Please check back later for updates '{{ response_item.keyword }}'.</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+
+    <!-- Print "No recommendations found" directly on the output screen -->
+    {% if not response_data %} 
+        <p>No recommendation found,<br>The project is still under process and is not fully completed. Please check back later for updates</p>
+    {% endif %}
+</body>
+</html>

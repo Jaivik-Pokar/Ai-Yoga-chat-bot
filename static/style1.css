@@ -1,0 +1,15 @@
+chat{
+    height: 400px;
+    overflow-y: scroll;
+    padding: 20px;
+    font-size: medium;
+    flex-grow: 1;
+    padding: 10px;
+    display: flex; /* Add this line */
+    flex-direction: column; /* Add this line */
+}
+
+b{
+    color: #cc8800;
+    font-weight: bold;
+}
